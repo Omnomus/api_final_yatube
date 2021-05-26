@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Comment, Post
+from .models import Comment, Follow, Group, Post
 
 
 class PostSerializer(serializers.ModelSerializer):

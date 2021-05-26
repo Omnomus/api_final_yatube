@@ -90,3 +90,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
