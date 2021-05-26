@@ -1,9 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import generics, viewsets
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .models import Post
+from .models import Group, Post
 from .permissions import IsAuthorOrReadOnly
-from .serializers import CommentSerializer, PostSerializer
+from .serializers import CommentSerializer, GroupSerializer, PostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -28,3 +29,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
+
+
+class GroupListCreate(generics.ListCreateAPIView):
+    """Представления для получения списка групп и создания новой группы."""
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)

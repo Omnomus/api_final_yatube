@@ -29,8 +29,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField(source='title')
-
     class Meta:
         fields = ('pk', 'title',)
         model = Group
+        read_only_fields = ('title',)

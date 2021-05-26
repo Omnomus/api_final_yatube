@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import CommentViewSet, PostViewSet
+from .views import CommentViewSet, GroupListCreate, PostViewSet
 
 router_v1 = DefaultRouter()
 router_v1.register('v1/posts', PostViewSet, basename='posts')
@@ -21,5 +21,6 @@ urlpatterns = [
     path('v1/token/refresh/',
          TokenRefreshView.as_view(),
          name='token_refresh'),
-    path('', include(router_v1.urls))
+    path('', include(router_v1.urls)),
+    path('v1/group/', GroupListCreate.as_view()),
 ]
