@@ -5,10 +5,14 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import PostViewSet
+from .views import CommentViewSet, PostViewSet
 
 router_v1 = DefaultRouter()
 router_v1.register('v1/posts', PostViewSet, basename='posts')
+router_v1.register(
+    'v1/posts/(?P<post_id>[^/.]+)/comments',
+    CommentViewSet,
+    basename='comments')
 
 urlpatterns = [
     path('v1/token/',
