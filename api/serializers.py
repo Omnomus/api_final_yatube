@@ -32,4 +32,3 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('pk', 'title',)
         model = Group
-        read_only_fields = ('title',)
