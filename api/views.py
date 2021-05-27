@@ -1,11 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated, IsAuthenticatedOrReadOnly)
 
-from .models import Group, Post
+from .models import Follow, Group, Post
 from .permissions import IsAuthorOrReadOnly
-from .serializers import CommentSerializer, GroupSerializer, PostSerializer
+from .serializers import (
+    CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
+)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -35,7 +38,17 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class GroupListCreate(generics.ListCreateAPIView):
-    """Представления для получения списка групп и создания новой группы."""
+    """Представление для получения списка групп и создания новой группы."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+class FollowListCreate(generics.ListCreateAPIView):
+    """Получение списка подписок и создание новой."""
+    serializer_class = FollowSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        following = self.request.user
+        return Follow.objects.filter(following=following)

@@ -21,10 +21,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    user = serializers.SlugRelatedField(
+        read_only=True, slug_field='username')
+    following = serializers.SlugRelatedField(
+        read_only=True, slug_field='username')
 
     class Meta:
-        fields = ('author', 'user',)
+        fields = ('user', 'following',)
         model = Follow
 
 

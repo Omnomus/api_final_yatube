@@ -13,7 +13,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ('author', 'user')
+    list_display = ('user', 'following')
     empty_value_display = '-пусто-'
 
 
