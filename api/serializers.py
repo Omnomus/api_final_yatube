@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import Comment, Follow, Group, Post
@@ -29,12 +28,6 @@ class FollowSerializer(serializers.ModelSerializer):
         read_only=True, slug_field='username')
     following = serializers.SlugRelatedField(
         read_only=False, slug_field='username', queryset=User.objects.all())
-
-    def validate(self, attrs):
-        user = self.context['request'].user
-        following = User.objects.get(username=attrs['following'])
-        if user == following:
-            raise ValidationError(message='Подписка на себя невозможна')
 
     class Meta:
         fields = ('user', 'following',)
