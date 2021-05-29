@@ -61,4 +61,5 @@ class FollowListCreate(generics.ListCreateAPIView):
         return Follow.objects.filter(following=following)
 
     def perform_create(self, serializer):
-        pass
+        user = self.request.user
+        serializer.save(user=user)
