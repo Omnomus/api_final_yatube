@@ -1,4 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.auth import get_user_model
+
 from rest_framework import generics, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import (
@@ -9,6 +11,8 @@ from .permissions import IsAuthorOrReadOnly
 from .serializers import (
     CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
 )
+
+User = get_user_model()
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -46,9 +50,15 @@ class GroupListCreate(generics.ListCreateAPIView):
 
 class FollowListCreate(generics.ListCreateAPIView):
     """Получение списка подписок и создание новой."""
+    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         following = self.request.user
         return Follow.objects.filter(following=following)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        following = User.objects.get(username=self.request.data['following'])
+        serializer.save(user=user, following=following)
