@@ -1,16 +1,14 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth import get_user_model
-
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, viewsets
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import (
-    IsAuthenticated, IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 
 from .models import Follow, Group, Post
 from .permissions import IsAuthorOrReadOnly
-from .serializers import (
-    CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
-)
+from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
+                          PostSerializer)
 
 User = get_user_model()
 
@@ -50,11 +48,10 @@ class GroupListCreate(generics.ListCreateAPIView):
 
 class FollowListCreate(generics.ListCreateAPIView):
     """Получение списка подписок и создание новой."""
-    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('user__username', 'following__username')
+    search_fields = ('user__username',)
 
     def get_queryset(self):
         following = self.request.user

@@ -1,13 +1,11 @@
 from django.urls import path
 from django.urls.conf import include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-from .views import (
-    CommentViewSet, FollowListCreate, GroupListCreate, PostViewSet
-)
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
+
+from .views import (CommentViewSet, FollowListCreate, GroupListCreate,
+                    PostViewSet)
 
 router_v1 = DefaultRouter()
 router_v1.register('v1/posts', PostViewSet, basename='posts')
