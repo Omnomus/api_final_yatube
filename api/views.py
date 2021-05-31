@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
+from rest_framework.response import Response
 
 from .models import Follow, Group, Post
 from .permissions import IsAuthorOrReadOnly
@@ -39,19 +40,24 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user, post=post)
 
 
-class GroupListCreate(generics.ListCreateAPIView):
+class GroupViewSet(viewsets.ModelViewSet):
     """Представление для получения списка групп и создания новой группы."""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    http_method_names = ['get', 'post', 'head', 'options', 'trace']
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-class FollowListCreate(generics.ListCreateAPIView):
+class FollowViewSet(viewsets.ModelViewSet):
     """Получение списка подписок и создание новой."""
     serializer_class = FollowSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('user__username',)
+    http_method_names = ['get', 'post', 'head', 'options', 'trace']
 
     def get_queryset(self):
         following = self.request.user
@@ -60,3 +66,6 @@ class FollowListCreate(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(user=user)
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
