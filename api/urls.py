@@ -10,7 +10,7 @@ from .views import (CommentViewSet, FollowViewSet, GroupViewSet,
 router_v1 = DefaultRouter()
 router_v1.register('v1/posts', PostViewSet, basename='posts')
 router_v1.register(
-    'v1/posts/(?P<post_id>[^/.]+)/comments',
+    'v1/posts/(?P<post_id>\\d+)/comments',
     CommentViewSet,
     basename='comments')
 router_v1.register('v1/group', GroupViewSet, basename='group')
