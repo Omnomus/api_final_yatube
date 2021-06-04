@@ -1,6 +1,9 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_final_yatube.settings")
 User = get_user_model()
 
 

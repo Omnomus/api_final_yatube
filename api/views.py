@@ -6,7 +6,7 @@ from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 
-from .models import Follow, Group, Post
+from .models import Group, Post
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CommentSerializer, FollowSerializer, GroupSerializer,
                           PostSerializer)
@@ -60,8 +60,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'head', 'options', 'trace']
 
     def get_queryset(self):
-        following = self.request.user
-        return Follow.objects.filter(following=following)
+        return self.request.user.following
 
     def perform_create(self, serializer):
         user = self.request.user
